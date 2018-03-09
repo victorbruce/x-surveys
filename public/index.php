@@ -22,7 +22,7 @@
     No_Questions:   <input type="text" name="no_questions">
         <input type="text" name="category">
         <input type="submit" value="Save" name="submit"/>
-    </form>
+    </form> 
 
     Delete Survey
     <form method="POST" action="delete_survey.php">
