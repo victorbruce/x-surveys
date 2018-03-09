@@ -62,5 +62,6 @@ class MySQLDatabase {
         }
     }
 }
+
 $database = new MySQLDatabase();
 ?>
