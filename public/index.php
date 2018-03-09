@@ -15,7 +15,7 @@
         Category: <input type="text" name="category">
         <input type="submit" value="Create" name="submit"/>
     </form>
-
+ 
     Edit Survey
     <form method="POST" action="edit_survey.php">
     Name:<input type="text" name="survey_name">
