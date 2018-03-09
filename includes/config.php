@@ -1,5 +1,5 @@
 <?php
-/* $config = parse_ini_file('config.ini'); */
+$config = parse_ini_file('config.ini');
 
 defined('DB_SERVER') ? NULL : define('DB_SERVER', $config['host']);
 defined('DB_USER')   ? NULL : define('DB_USER', $config['username']);
