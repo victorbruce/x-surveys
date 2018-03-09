@@ -1,6 +1,7 @@
 <?php
 
 include ('database.php');
+include_once('config.php');
 
 class MySQLDatabase {
     private $connection;
@@ -26,5 +27,6 @@ class MySQLDatabase {
     }
 
 }
+
 $database = new MySQLDatabase();
 ?>
