@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    Create Survey
+    Create Surveys
     <form method="POST" action="create_survey.php">
         Name: <input type="text" name="survey_name">
         No_Questions: <input type="text" name="no_questions">
