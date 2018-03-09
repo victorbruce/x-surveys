@@ -1,5 +1,7 @@
 <?php
 
+include_once('config.php');
+
 class MySQLDatabase {
     private $connection;
     public $last_query;
