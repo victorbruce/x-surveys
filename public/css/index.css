@@ -1,0 +1,13 @@
+#dashboard-menu, #dashboard-menu-view {
+    border: 1px solid #eee;
+    margin: 20px;
+    padding: 10px;
+}
+
+#grey-header{
+    background-color: #eee;
+}
+
+.list-style-none{
+    list-style-type: none;
+}
