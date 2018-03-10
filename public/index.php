@@ -1,17 +1,19 @@
 <?php
     include_once('../includes/survey.php');
 ?>
-   <?php include_once('../includes/layouts/header.php');?>
+<?php include_once('../includes/layouts/header.php');?>
 
     <div class="container">
         <div class="row">
+
             <div class="col-md-3" id="dashboard-menu">
                 <ul class="list-style-none">
                     <h4 id="grey-header">Operations</h4>
                     <li> <a href="new_survey.php">Create Survey</a> </li>
                     <li> <a href="logout.php">Logout</a> </li>
                 </ul>
-            </div>
+            </div><!--/Dashboard Menu -->
+
             <div class="col-md-8" id="dashboard-menu-view">
                 <h4 id="grey-header">All Surveys</h4>
                 <?php 
@@ -41,9 +43,4 @@
             </div>
         </div>
     </div>
-
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-</body>
-</html>
+<?php include_once('../includes/layouts/footer.php');?>
