@@ -1,8 +1,15 @@
 <?php
+    session_start();
     include_once('../includes/survey.php');
     include_once('../includes/category.php');
 ?>
 <?php include_once('../includes/layouts/header.php')?>
+    <?php
+        if (empty($_SESSION['admin_id'])) {
+            header('Location: admin/login.php');
+            exit;
+        }
+    ?>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
