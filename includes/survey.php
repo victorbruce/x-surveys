@@ -5,12 +5,12 @@ include_once('functions.php');
 class Survey {
     public $survey_id;
     public $survey_name;
-    public $no_questions;
+    /* public $no_questions; */
     public $survey_category;
 
     public function __construct() {
         $this->no_questions = 0;
-        $this->survey_category = 0;
+        $this->survey_category = 1;
     }
 
     public function create() {
@@ -26,14 +26,13 @@ class Survey {
         
         //Check if INSERT was successful
         if( $result && $database->affected_rows() >= 0 ){
+            //redirect them to add questions.
             redirectTo('index.php');
         }
         else{
             echo 'Create failed';
         }
 
-        //redirect them to add questions.
-        
     }
 
     public function read_all() {
@@ -105,7 +104,7 @@ class Survey {
 
         //Extract the parameters from field into class.
         $this->survey_name = $database->escape_value( $_POST['survey_name'] );
-        $this->no_questions = $database->escape_value( $_POST['no_questions'] );
+       /*  $this->no_questions = $database->escape_value( $_POST['no_questions'] ); */
         $this->survey_category = $database->escape_value( $_POST['survey_category'] );
     }
 
