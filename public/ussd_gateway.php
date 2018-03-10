@@ -16,8 +16,6 @@ if ( $text == "" ) {
      $response  = "CON Welcome to XSurveys! \n";
      $response .= "1 Subscribe to service \n";
      $response .= "2 Unsubscribe from service \n";
-     $response .= "3 Start a new survey \n";
-
 }
 
 else if ( $text == "1" ) {
@@ -42,44 +40,25 @@ else if ( $text == "1*2" ) {
   }
 
 else if($text == "2") {
-  $response = "END You have been unsubscribed.";
+    $database = new MySQLDatabase();
+    $res = $database->query("SELECT * from `subscriber` WHERE phone_number={$phoneNumber}");
+    $sub = $database->fetch_array($res);
+
+    $subscriber = new Subscriber();
+
+    if( $subscriber->delete($sub['id']) ){
+        $response = "END You have been unsubscribed.";
+    }else{
+        $response = "END Unsubscription unsuccessful.";
+    }
+  
  }
 
-else if($text == "3") {
-    $response = "CON Which category do you prefer to be queried on? \n";
-    
-    $category = new Category();
-    $categories = $category->read_all();
-
-    foreach($categories as $single ){
-        $single_id = $single['id']; 
-        $single_name = $single['name'];
-
-        $response .= "{$single_id} {$single_name}";
-    }
-
-}
-
-else if ( strlen(end((explode('*', $text)))) === 1  ){
-    $category = new Category();
-    $found_category = $category->find($text)['name'];
-
-    $response = "CON You chose {$found_category}. \n Please enter your mobile money number:";
-}
-
-else if ( strlen(end((explode('*', $text)))) > 1 ){
-    $number = end((explode('*', $text)));
-
-    //Register the collected Mobile Money number.
-    $subscriber = new Subscriber();
-    $subscriber->edit();
-
-    $response = "END Hurray! \nMoney earned will be paid to {$number}";
-}
-
 else {
-    $response = "END Your survey will start after this.";
+
+    $response = "END Hurray! \nMoney earned will be paid to {$phoneNumber}";
 }
+
 
 
 
