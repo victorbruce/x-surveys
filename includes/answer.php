@@ -3,15 +3,14 @@
 include_once('database.php');
 include_once('functions.php');
 
-class Question {
-    public $no_questions;
-    public $question;
+class Answer {
+    public $answer;
+    private $answer_id;
     private $question_id;
-    public $survey_id;
-    public $author_code;
+    private $subscriber_id;
 
     public function __construct(){
-        $this->no_questions = 0;
+        $this->answer= "";
     }
 
     public function create(){
@@ -19,12 +18,14 @@ class Question {
 
         $this->get_params();
 
-        $result = $database->query("INSERT INTO `questions` 
-        ( question,  
-        survey_id, 
+        $result = $database->query("INSERT INTO `answers` 
+        ( answer,  
+        question_id, 
+        subscriber_id,
         created_at, updated_at ) 
-        VALUES ( '{$this->question}', 
-        {$this->survey_id} ,
+        VALUES ( '{$this->answer}', 
+        {$this->question_id},
+        {$this->subscriber_id} ,
          NOW(), NOW() )");
 
         //Check if INSERT was successful
@@ -40,17 +41,17 @@ class Question {
 
         $this->get_params();
 
-        $this->question_id = $database->escape_value( $id );
+        $this->answer_id = $database->escape_value( $id );
 
-        $result = $database->query("UPDATE `questions` 
-        SET question = '{$this->question}', 
-    updated_at = NOW() WHERE id = {$this->question_id}");
+        $result = $database->query("UPDATE `answers` 
+        SET answer = '{$this->answer}', 
+        updated_at = NOW() WHERE id = {$this->answer_id}");
 
         //Check if INSERT was successful
         if($result && $database->affected_rows() >= 0){
             redirectTo('index.php');
         }else{
-            echo 'Edit failed.<a href="index.php">Go to dashboard</a>';
+            echo 'Edit answer failed.<a href="index.php">Go to dashboard</a>';
         }
     }
 
@@ -58,15 +59,15 @@ class Question {
         //Create a database connection object
         $database = new MySQLDatabase();
 
-        $this->question_id = $database->escape_value($id);
+        $this->answer_id = $database->escape_value($id);
 
         //Remove survey from database
-        $result = $database->query("DELETE from `questions` WHERE id = {$this->question_id}");
+        $result = $database->query("DELETE from `answers` WHERE id = {$this->answer_id}");
         
         if( $result && $database->affected_rows() == 1 ){
             redirectTo('index.php');
         }else{
-            echo 'Delete failed';
+            echo 'Delete answer failed';
         }
     }
 
@@ -75,21 +76,21 @@ class Question {
         $database = new MySQLDatabase();
 
         //Extract the parameters from field into class.
-        $this->question = $database->escape_value( $_POST['question'] );
-        $this->survey_id = (int) $database->escape_value( $_POST['survey_id'] );
-        /* $this->no_questions = $database->escape_value( $_POST['no_questions'] ); */
+        $this->answer= $database->escape_value( $_POST['answer'] );
+        $this->question_id = (int) $database->escape_value( $_POST['question_id'] );
+        $this->subscriber_id = (int) $database->escape_value( $_POST['subscriber_id'] );
     }
 
     public function read_all(){
         $database = new MySQLDatabase();
-        $results = $database->query("SELECT * from `questions`");
+        $results = $database->query("SELECT * from `answers`");
         return $results;
     }
 
     public function find($id){
         //Create a database connection object
         $database = new MySQLDatabase();
-        return $database->query("SELECT * from `questions` WHERE id={$id}");    
+        return $database->query("SELECT * from `answers` WHERE id={$id}");    
     }
     
 

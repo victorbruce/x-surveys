@@ -3,7 +3,6 @@ include_once('database.php');
 include_once('functions.php');
 
 class Survey {
-    public $survey_id;
     public $survey_name;
     /* public $no_questions; */
     public $survey_category;
@@ -27,7 +26,7 @@ class Survey {
         //Check if INSERT was successful
         if( $result && $database->affected_rows() >= 0 ){
             //redirect them to add questions.
-            redirectTo('index.php');
+            redirectTo('new_question.php?id='.$this->survey_category);
         }
         else{
             echo 'Create failed';
