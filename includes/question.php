@@ -1,6 +1,7 @@
 <?php 
 
 include_once('database.php');
+include_once('functions.php');
 
 class Question {
     public $no_questions;
@@ -19,13 +20,12 @@ class Question {
         $this->get_params();
 
         $result = $database->query("INSERT INTO `questions` 
-        ( question, 
-        author_code, 
+        ( question,  
         survey_id, 
         created_at, updated_at ) 
-        VALUES ( '{$this->question}', '{$this->author_code}',{$this->survey_id} , '{$this->category}', NOW(), NOW() )
-        
-        ;INSERT INTO `surveys` (no_questions) VALUES({$this->no_questions}) WHERE $id = {$this->survey_id} ");
+        VALUES ( '{$this->question}', 
+        {$this->survey_id} ,
+         NOW(), NOW() )");
 
         //Check if INSERT was successful
         if($result && $database->affected_rows() >= 0){
@@ -40,7 +40,7 @@ class Question {
 
         $this->get_params();
 
-        $this->question_id = $database->esacpe_value( $id );
+        $this->question_id = $database->escape_value( $id );
 
         $result = $database->query("UPDATE `questions` 
         SET question = '{$this->question}', 
@@ -50,7 +50,7 @@ class Question {
         if($result && $database->affected_rows() >= 0){
             redirectTo('index.php');
         }else{
-            echo 'Create failed.<a href="index.php">Go to dashboard</a>';
+            echo 'Edit failed.<a href="index.php">Go to dashboard</a>';
         }
     }
 
@@ -76,9 +76,8 @@ class Question {
 
         //Extract the parameters from field into class.
         $this->question = $database->escape_value( $_POST['question'] );
-        $this->survey_id = $database->escape_value( $_POST['survey_id'] );
-        $this->no_questions = $database->escape_value( $_POST['no_questions'] );
-        $this->author_code = $database->escape_value( $_POST['author_code'] );
+        $this->survey_id = (int) $database->escape_value( $_POST['survey_id'] );
+        /* $this->no_questions = $database->escape_value( $_POST['no_questions'] ); */
     }
 
     public function read_all(){

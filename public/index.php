@@ -1,5 +1,6 @@
 <?php
     include_once('../includes/survey.php');
+    include_once('../includes/question.php');
 ?>
 <?php include_once('../includes/layouts/header.php');?>
 
@@ -15,31 +16,60 @@
             </div><!--/Dashboard Menu -->
 
             <div class="col-md-8" id="dashboard-menu-view">
-                <h4 id="grey-header">All Surveys</h4>
-                <?php 
-                    //Create a database connection object
-                    $database = new MySQLDatabase();
+                <section>
+                    <h4 id="grey-header">All Surveys</h4>
+                    <?php 
+                        //Create a database connection object
+                        $database = new MySQLDatabase();
 
-                    $survey = new Survey();
-                    $all_surveys = $survey->read_all();
+                        $survey = new Survey();
+                        $all_surveys = $survey->read_all();
 
-                    //Headings
-                    echo "<table class='table table-condensed'> 
-                    <tr> 
-                        <strong><td>Name</td></strong> 
-                        <strong><td>Operations</td></strong> 
-                    </tr>";
-                    
-                    if( $database->num_rows($all_surveys) > 0 ){
-                        foreach($all_surveys as $survey)
+                        //Headings
+                        echo "<table class='table table-condensed'> 
+                        <tr> 
+                            <strong><td><strong>Name</td></strong></strong> 
+                            <strong><td><strong>Operations</strong></td></strong> 
+                        </tr>";
+                        
+                        if( $database->num_rows($all_surveys) > 0 ){
+                            foreach($all_surveys as $survey)
+                                echo "<tr>
+                                    <td>".$survey['name']."</td>
+                                    <td><a href='update_survey.php?id=".urlencode($survey['id'])."'>Edit</a></td> 
+                                    <td><a href='delete_survey.php?id=".urlencode($survey['id'])."'>Delete</a></td>
+                                <tr>";
+                        }
+                        echo "</table>";
+                    ?>
+                </section>
+                <br>
+                <section>
+                    <h4 id="grey-header">All Questions</h4>
+                    <?php 
+                        //Create a database connection object
+                        $database = new MySQLDatabase();
+
+                        $question = new Question();
+                        $all_questions = $question->read_all();
+
+                        //Headings
+                        echo "<table class='table table-condensed'> 
+                        <tr> 
+                            <strong><td><strong>Question</td></strong></strong> 
+                            <strong><td><strong>Operations</td></strong></strong> 
+                        </tr>";
+
+                        foreach($all_questions as $question){
                             echo "<tr>
-                                <td>".$survey['name']."</td>
-                                <td><a href='update_survey.php?id=".urlencode($survey['id'])."'>Edit</a></td> 
-                                <td><a href='delete_survey.php?id=".urlencode($survey['id'])."'>Delete</a></td>
-                            <tr>";
-                    }
-                    echo "</table>";
-                ?>
+                                    <td>".$question['question']."</td>
+                                    <td><a href='update_question.php?id=".urlencode($question['id'])."'>Edit</a></td> 
+                                    <td><a href='delete_question.php?id=".urlencode($question['id'])."'>Delete</a></td>
+                                <tr>";
+                        }
+                        echo "</table>";
+                    ?>
+                </section>
             </div>
         </div>
     </div>
