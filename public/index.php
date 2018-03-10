@@ -1,37 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+<?php
+    include_once('../includes/survey.php');
+?>
+<?php include_once('../includes/layouts/header.php');?>
 
-    Create Surveys
-    <form method="POST" action="create_survey.php">
-        Name: <input type="text" name="survey_name">
-        No_Questions: <input type="text" name="no_questions">
-        Category: <input type="text" name="category">
-        <input type="submit" value="Create" name="submit"/>
-    </form>
- 
-    Edit Survey
-    <form method="POST" action="edit_survey.php">
-    Name:<input type="text" name="survey_name">
-    No_Questions:   <input type="text" name="no_questions">
-        <input type="text" name="category">
-        <input type="submit" value="Save" name="submit"/>
-    </form> 
+    <div class="container">
+        <div class="row">
 
-    Delete Survey
-    <form method="POST" action="delete_survey.php">
-    Name: <input type="text" name="survey_name">
-    No_Questions    <input type="text" name="no_questions">
-        <input type="text" name="category">
-        <input type="submit" value="Delete" name="submit"/>
-    </form>
+            <div class="col-md-3" id="dashboard-menu">
+                <ul class="list-style-none">
+                    <h4 id="grey-header">Operations</h4>
+                    <li> <a href="new_survey.php">Create Survey</a> </li>
+                    <li> <a href="logout.php">Logout</a> </li>
+                </ul>
+            </div><!--/Dashboard Menu -->
 
+            <div class="col-md-8" id="dashboard-menu-view">
+                <h4 id="grey-header">All Surveys</h4>
+                <?php 
+                    //Create a database connection object
+                    $database = new MySQLDatabase();
 
-</body>
-</html>
+                    $survey = new Survey();
+                    $all_surveys = $survey->read_all();
+
+                    //Headings
+                    echo "<table class='table table-condensed'> 
+                    <tr> 
+                        <strong><td>Name</td></strong> 
+                        <strong><td>Operations</td></strong> 
+                    </tr>";
+                    
+                    if( $database->num_rows($all_surveys) > 0 ){
+                        foreach($all_surveys as $survey)
+                            echo "<tr>
+                                <td>".$survey['name']."</td>
+                                <td><a href='update_survey.php?id=".urlencode($survey['id'])."'>Edit</a></td> 
+                                <td><a href='delete_survey.php?id=".urlencode($survey['id'])."'>Delete</a></td>
+                            <tr>";
+                    }
+                    echo "</table>";
+                ?>
+            </div>
+        </div>
+    </div>
+<?php include_once('../includes/layouts/footer.php');?>

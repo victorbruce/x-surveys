@@ -26,53 +26,74 @@ class Survey {
         
         //Check if INSERT was successful
         if( $result && $database->affected_rows() >= 0 ){
-            echo 'Created survey';
+            redirectTo('index.php');
         }
         else{
             echo 'Create failed';
         }
 
         //redirect them to add questions.
+        
     }
 
     public function read_all() {
-        $results = $database->query("SELECT * from `surveys`");
-
-        print_r($results);
-    }
-
-    public function edit() {
         //Create a database connection object
         $database = new MySQLDatabase();
+        
+        $results = $database->query("SELECT * from `surveys`");
+
+        return $results;
+    }
+
+    public function find( $id ){
+        //Create a database connection object
+        $database = new MySQLDatabase();
+        return $database->query("SELECT * from `surveys` WHERE id={$id}");   
+    }
+
+    public function find_category( $category_id ){
+        //Create a database connection object
+        $database = new MySQLDatabase();
+        return $database->query("SELECT * from `categories` WHERE id={$category_id} LIMIT 1");   
+    }
+
+    public function edit( $id ) {
+        //Create a database connection object
+        $database = new MySQLDatabase();
+
+        //escape and attach survey id
+        $this->survey_id = $database->escape_value( $id );
 
         //Get Parameters from HTML field 
         $this->get_params();
 
         //Insert them into them database
-        $result = $database->query("UPDATE `surveys` SET name =  $this->survey_name
-        ,category_id = $this->survey_category WHERE id = $this->survey_id LIMIT 1");
+        $result = $database->query("UPDATE `surveys` SET name =  '{$this->survey_name}'
+        ,category_id = '{$this->survey_category}', updated_at = NOW() WHERE id = {$this->survey_id} LIMIT 1");
         
         //Check if INSERT was successful
         if( $result && $database->affected_rows() >= 0 ){
-            echo 'Updated survey';
+            redirectTo('index.php');
         }
         else{
             echo 'Update failed';
         }
 
         //redirect them to dashboard. We'll implement later
-        //redirectTo('dashboard.php');
+        redirectTo('index.php');
     }
 
-    public function delete() {
+    public function delete( $id ) {
         //Create a database connection object
         $database = new MySQLDatabase();
 
+        $this->survey_id = $database->escape_value($id);
+
         //Remove survey from database
-        $result = $database->query("DELETE from `surveys` WHERE id = $this->survey_id");
+        $result = $database->query("DELETE from `surveys` WHERE id = {$this->survey_id}");
         
         if( $result && $database->affected_rows() == 1 ){
-            echo 'Deleted survey';
+            redirectTo('index.php');
         }else{
             echo 'Delete failed';
         }
